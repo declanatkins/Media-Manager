@@ -11,6 +11,7 @@ class Game(MediaItem):
     def __init__(
             self,
             name: str,
+            data: str,
             thumbnail: str,
             genres: str,
             platform: str,

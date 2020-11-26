@@ -5,12 +5,19 @@ from uuid import uuid4
 
 class MediaItem(ABC):
     """Base class representing a media item
+
+    Args:
+        name (str): name of the media item
+        data_path (str): path to the data for this media item
+        thumbnail_path (str): path to the thumbnail for this media item
+        genres (list[str]): list of genres for this media item
     """
 
-    def __init__(self, name: str, thumbnail='', genres=[]):
+    def __init__(self, name: str, data_path: str, thumbnail_path='', genres=[]):
         self._name = name
-        self._thumbnail = thumbnail
+        self._thumbnail_path = thumbnail_path
         self._genres = genres
+        self._data_path = data_path
         self._id = uuid4()
 
     @abstractmethod

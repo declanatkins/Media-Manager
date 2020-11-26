@@ -1,0 +1,36 @@
+openapi: 3.0.0
+
+info: 
+  title: "Media-Manager-Api"
+  version: 0.0.1
+
+tags:
+  - name: users
+  - name: media
+  - name: files
+
+paths:
+  /users:
+    post:
+      tags:
+      - users
+  /users/{user_id}:
+    get:
+      tags:
+      - users
+    put:
+      tags:
+      - users
+    delete:
+      tags:
+      - users
+  /users/{user_id}/login:
+    post:
+      tags:
+      - users
+  /media:
+  /media/{media_type}:
+  /media/collections:
+  /media/collections/{collection_id}:
+  /files:
+  /files/{filename}:
