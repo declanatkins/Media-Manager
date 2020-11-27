@@ -4,7 +4,7 @@ from flask import request
 from .game import Game
 from .movie import Movie
 from .song import Song
-from ..user.auth import validate_session
+from ..users.auth import validate_session
 
 
 TYPES_DICT = {

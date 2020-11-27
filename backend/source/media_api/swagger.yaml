@@ -14,23 +14,465 @@ paths:
     post:
       tags:
       - users
-  /users/{user_id}:
-    get:
-      tags:
-      - users
+      description: Create a new user
+      summary: Create a new user
+      operationId: media_api.users.endpoints.create_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  description: Name of the user
+      parameters:
+        - in: header
+          name: password
+          schema:
+            type: string
+          required: true      
+      responses:
+        201:
+          description: Success Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  user_name:
+                    type: string
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     put:
       tags:
       - users
-    delete:
-      tags:
-      - users
-  /users/{user_id}/login:
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true  
+      description: update user name
+      summary: Update user name
+      operationId: media_api.users.endpoints.rename_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  description: Name of the user
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user_name:
+                    type: string
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /users/logout:
     post:
       tags:
       - users
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+      description: logout a user
+      summary: logout a user
+      operationId: media_api.users.endpoints.logout_user
+      responses:
+        204:
+          description: Success No Content
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /users/{user_name}login:
+    post:
+      tags:
+      - users
+      parameters:
+        - in: header
+          name: password
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: user_name
+          required: true
+          schema:
+            type: string
+      description: login the user
+      summary: login the user
+      operationId: media_api.users.endpoints.login_user
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  session_id:
+                    type: string
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /media:
+    get:
+      tags:
+      - media
+      summary: Get the media items
+      description: Get the media items
+      operationId: media_api.media.endpoints.search_media
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/media'
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      tags:
+      - media
+      summary: Create media item
+      description: Create media item
+      operationId: media_api.media.endpoints.create_media
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/media'
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/media'
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /media/types/{media_type}:
+    get:
+      tags:
+      - media
+      summary: Get the media items by type
+      description: Get the media items by type
+      operationId: media_api.media.endpoints.search_media_by_type
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: media_type
+          schema:
+            type: string
+            enum:
+            - Game
+            - Movie
+            - Song
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/media'
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /media/{media_id}:
-  /media/collections:
-  /media/collections/{collection_id}:
-  /files:
-  /files/{filename}:
+    get:
+      tags:
+      - media
+      summary: Get the media items by id
+      description: Get the media items by id
+      operationId: media_api.media.endpoints.get_media_by_id
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: media_id
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/media'
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      tags:
+      - media
+      summary: Update the media item by id
+      description: Update the media item by id
+      operationId: media_api.media.endpoints.update_media_by_id
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: media_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/media'
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/media'
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      tags:
+      - media
+      summary: Delete the media items by id
+      description: Delte the media items by id
+      operationId: media_api.media.endpoints.delete_media_by_id
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: media_id
+          schema:
+            type: string
+          required: true
+      responses:
+        204:
+          description: Success No Content
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /files/{file_name}:
+    post:
+      tags:
+        - files
+      summary: Create a new file for the service
+      description: Create a new file for the service
+      operationId: media_api.files.endpoints.create_file
+      parameters:
+        - in: path
+          name: file_name
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          description: Success Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file_id:
+                    type: string
+                    description: path to the file
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    get:
+      tags:
+      - files
+      summary: Download a file from the service
+      description: Download a file from the service
+      operationId: media_api.files.endpoints.get_file
+      parameters:
+        - in: path
+          name: file_name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      tags:
+      - files
+      summary: Delete a file from the service
+      description: Delete a file from the service
+      operationId: media_api.files.endpoints.delete_file
+      parameters:
+        - in: path
+          name: file_name
+          schema:
+            type: string
+          required: true
+      responses:
+        204:
+          description: Success No content
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    error:
+      properties:
+        message:
+          type: string
+          description: "Details about what caused the error"
+          example: "Invalid user name"
+    media:
+      required:
+        - type
+        - thumbnail_path
+        - genres
+        - data_path
+      properties:
+        type:
+          description: Type of the media item
+          type: string
+          enum:
+            - Game
+            - Movie
+            - Song
+        thumbnail_path:
+          description: Path to the thumbnail file
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        data_path:
+          description: Path to the data file
+          type: string
+        _id:
+          description: id of the item
+          type: string
+        platform:
+          description: Platform for the Game
+          type: string
+        multiplayer:
+          description: Multiplayer for the Game
+          type: string
+        artist:
+          description: Artist of the song
+          type: string
+        album:
+          description: Album for the song
+          type: string
+        director:
+          description: Director of the movie
+          type: string
+        starring:
+          description: starring actors/actresses for the movie
+          type: array
+          items:
+            type: string

@@ -28,5 +28,5 @@ class Game(MediaItem):
             'genres': self._genres,
             'multiplayer': self._multiplayer,
             'platform': self._platform,
-            data_path: self._data_path
+            'data_path': self._data_path
         }

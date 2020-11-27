@@ -16,7 +16,7 @@ def create_file(file_name: str):
     return jsonify({'file_id': new_name}), HTTPStatus.CREATED
 
 
-def delete_file(file_id: str):
+def delete_file(file_name: str):
     file_path = os.path.join(config.FILES_DIRECTORY, file_id)
     try:
         os.remove(file_path)
@@ -30,7 +30,7 @@ def delete_file(file_id: str):
     return jsonify(response), code
 
 
-def get_file(file_id: str):
+def get_file(file_name: str):
     try:
         response = send_from_directory(config.FILES_DIRECTORY, file_id)
     except FileNotFoundError:

@@ -9,7 +9,7 @@ from .user import User
 def create_user():
     try:
         user_name = request.json['user_name']
-        _, password = request.headers['Authorization'].split()
+        password = request.headers['password']
         User.create(user_name, password)
         response = {'user_name': user_name}
         code = HTTPStatus.CREATED
@@ -24,7 +24,7 @@ def create_user():
 
 def login_user(user_name: str):
     try:
-        _, password = request.headers['Authorization'].split()
+        password = request.headers['password']
         session_id = User.log_in_user(user_name, password)
         response = {
             'session_id': session_id
@@ -40,8 +40,8 @@ def login_user(user_name: str):
 
 
 @validate_session
-def logout_user(user_name):
-    _, session_id = request.headers['Authorization'].split()
+def logout_user():
+    session_id = request.headers['session'].split()
     end_session(session_id)
     return {}, HTTPStatus.NO_CONTENT
 

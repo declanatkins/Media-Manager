@@ -19,7 +19,7 @@ def validate_session(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
-            _, session_id = request.headers['Authorization'].split()
+            session_id = request.headers['session']
         except KeyError:
             response = jsonify({
                 'status': HTTPStatus.FORBIDDEN,
