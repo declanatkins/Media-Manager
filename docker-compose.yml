@@ -1,0 +1,23 @@
+version: "3.4"
+
+services:
+  backend:
+    build:
+      context: "./backend"
+    restart: on-failure
+    ports:
+      - "5000:5000"
+    volumes:
+      - './data/service-files:/service-files'
+  frontend:
+    build:
+      context: "./frontend"
+    restart: on-failure
+    ports: 
+      - "8080:8080"
+  mongodb:
+    image: 'docker.io/bitnami/mongodb:4.4-debian-10'
+    ports:
+      - "27017:27017"
+    volumes:
+      - './data/mongodb_data:/bitnami/mongodb'
