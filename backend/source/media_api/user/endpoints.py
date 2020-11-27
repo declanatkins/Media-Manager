@@ -44,3 +44,16 @@ def logout_user(user_name):
     _, session_id = request.headers['Authorization'].split()
     end_session(session_id)
     return {}, HTTPStatus.NO_CONTENT
+
+
+@validate_session
+def rename_user():
+    user_name = request.json['user_name']
+    try:
+        request.session_user.update_user_name(user_name)
+        response = {'user_name': user_name}
+        code = HTTPStatus.OK
+    except ValueError as e:
+        response = {'message': f'Invalid user name: {str(e)}'}
+        code = HTTPStatus.BAD_REQUEST
+    return jsonify(response), code

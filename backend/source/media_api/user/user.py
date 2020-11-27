@@ -85,7 +85,11 @@ class User:
 
     def __init__(self, document: dict):
         self._document = document
-    
+
+    @property
+    def media(self) -> list[dict]:
+        return self._document['media']
+
     def update_user_name(self, user_name):
         
         if user_name == self._document['_id']:
