@@ -44,6 +44,7 @@ def validate_session(func):
             session_collection.delete_one({'_id': session_id})
             return response, HTTPStatus.FORBIDDEN
         request.session_user = User.retrieve_validated_user(session_doc['user_name'])
+        session_collection.update_one({'_id': session_id}, {'$set': {'last_access': time()}})
         return func(*args, **kwargs)
     return wrapper
 

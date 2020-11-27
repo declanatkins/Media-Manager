@@ -79,7 +79,8 @@ class User:
 
         session_obj = {
             '_id': str(uuid4()),
-            'user_name': user_name
+            'user_name': user_name,
+            'last_access': time()
         }
         session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
         created_id = session_collection.insert_one(session_obj)
