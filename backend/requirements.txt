@@ -1,0 +1,2 @@
+connexion[swagger-ui]==2.7.0
+pymongo==3.11.1

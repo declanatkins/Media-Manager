@@ -29,7 +29,7 @@ paths:
       tags:
       - users
   /media:
-  /media/{media_type}:
+  /media/{media_id}:
   /media/collections:
   /media/collections/{collection_id}:
   /files:

@@ -1,7 +1,4 @@
-from .media_item import MediaItem
-
-
-DEFAULT_GAME_THUMBNAIL = 'game_default_img.png'
+from .abc import MediaItem
 
 
 class Game(MediaItem):
@@ -17,18 +14,14 @@ class Game(MediaItem):
             platform: str,
             multiplayer: str
     ):
-        super(Game).__init__(
-            name=name,
-            thumnail=thumbnail or DEFAULT_GAME_THUMBNAIL,
-            genres=genres
-        )
+        super(Game).__init__(name, thumbnail, genres)
 
         self._multiplayer = multiplayer
         self._platform = platform
         
     def as_json(self) -> dict:
         return {
-            'id': self._id,
+            '_id': self._id,
             'name': self._name,
             'thumbnail': self._thumbnail,
             'genres': self._genres,
