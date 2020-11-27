@@ -76,7 +76,7 @@ class User:
             raise ValueError('Incorrect Password')
 
         session_obj = {
-            '_id': uuid4(),
+            '_id': str(uuid4()),
             'user_name': user_name
         }
         session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
