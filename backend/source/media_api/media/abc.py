@@ -20,6 +20,10 @@ class MediaItem(ABC):
         self._data_path = data_path
         self._id = uuid4()
 
+    @property
+    def id_code(self) -> str:
+        return self._id
+    
     @abstractmethod
     def as_json(self) -> dict: 
         """Return a json representation of the media item
