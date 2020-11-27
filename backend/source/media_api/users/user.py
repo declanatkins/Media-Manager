@@ -33,6 +33,8 @@ class User:
         Returns:
             (str): session id for the new session
         """
+        if not user_name or not password:
+            raise ValueError('Invalid username/password')
         if _get_user_document(user_name):
             raise ValueError('The user already exists')
         
