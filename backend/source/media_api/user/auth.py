@@ -46,3 +46,11 @@ def validate_session(func):
         request.session_context = User.retrieve_validated_user(session_doc['user_name'])
         return func(*args, **kwargs)
     return wrapper
+
+
+def end_session(session_id: str):
+    """End the session and log out the user
+    """
+    session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
+    session_collection.delete_one({'_id': session_id})
+    
