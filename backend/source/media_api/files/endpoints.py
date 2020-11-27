@@ -17,7 +17,7 @@ def create_file(file_name: str):
 
 
 def delete_file(file_name: str):
-    file_path = os.path.join(config.FILES_DIRECTORY, file_id)
+    file_path = os.path.join(config.FILES_DIRECTORY, file_name)
     try:
         os.remove(file_path)
         response = {}
@@ -32,7 +32,7 @@ def delete_file(file_name: str):
 
 def get_file(file_name: str):
     try:
-        response = send_from_directory(config.FILES_DIRECTORY, file_id)
+        response = send_from_directory(config.FILES_DIRECTORY, file_name)
     except FileNotFoundError:
         response = jsonify({
             'message': 'The file could not be retrived because it was not found'
