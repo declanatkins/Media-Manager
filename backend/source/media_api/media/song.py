@@ -27,5 +27,6 @@ class Song(MediaItem):
             'thumbnail': self._thumbnail_path,
             'genres': self._genres,
             'artist': self._artist,
-            'album': self._album
+            'album': self._album,
+            'data_path': self._data_path
         }

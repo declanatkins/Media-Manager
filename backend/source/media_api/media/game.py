@@ -8,13 +8,13 @@ class Game(MediaItem):
     def __init__(
             self,
             name: str,
-            data: str,
+            data_path: str,
             thumbnail_path: str,
             genres: str,
             platform: str,
             multiplayer: str
     ):
-        super(Game).__init__(name, thumbnail_path, genres)
+        super(Game).__init__(name, data_path, thumbnail_path, genres)
 
         self._multiplayer = multiplayer
         self._platform = platform
@@ -27,5 +27,6 @@ class Game(MediaItem):
             'thumbnail': self._thumbnail_path,
             'genres': self._genres,
             'multiplayer': self._multiplayer,
-            'platform': self._platform
+            'platform': self._platform,
+            data_path: self._data_path
         }

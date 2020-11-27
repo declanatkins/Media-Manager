@@ -29,18 +29,6 @@ def create_media():
 
 
 @validate_session
-def get_all_media():
-    return jsonify(request.session_user.media), HTTPStatus.OK
-
-
-@validate_session
-def get_all_media_by_type(media_type):
-    media = request.session_user.media
-    typed_media = [media_item for media_item in media if media_item['type'] == media_type]
-    return jsonify(typed_media), HTTPStatus.OK
-
-
-@validate_session
 def search_media():
     media = request.session_user.media
     filtered_media = []

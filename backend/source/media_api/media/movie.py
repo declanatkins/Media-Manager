@@ -27,5 +27,6 @@ class Movie(MediaItem):
             'thumbnail': self._thumbnail_path,
             'genres': self._genres,
             'director': self._director,
-            'starring': self._starring
+            'starring': self._starring,
+            'data_path': self._data_path
         }
