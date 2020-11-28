@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block page_title %}{% endblock %}
+{% block body %}
+    {{ super() }}
+    <div class="h-100 row align-items-center">
+        <div class="container">
+          Please enter the details for your game: 
+            <form action="/create-game-object" method="POST" enctype=multipart/form-data>
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" placeholder="my game" name="name">
+                </div>
+                <div class="form-group">
+                  <label for="multiplayer">Multiplayer</label>
+                  <select class="form-control" id="multiplayer" name="multiplayer">
+                    <option>None - just singleplayer</option>
+                    <option>CO-OP</option>
+                    <option>MOBA</option>
+                    <option>MMO</option>
+                    <option>PVP</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="platform">Platform</label>
+                  <select class="form-control" id="platform" name="platform">
+                    <option>PC</option>
+                    <option>Playstation</option>
+                    <option>Xbox</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="thumbnail">Thumbnail</label>
+                  <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
+                </div>
+                <div class="form-group">
+                  <label for="datafile">Data File</label>
+                  <input type="file" class="form-control-file" id="datafile" name="datafile">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </div>
+{% endblock %}

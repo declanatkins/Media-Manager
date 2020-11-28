@@ -107,3 +107,41 @@ def logout():
 @APP.route('/view-media')
 def view():
     return render_template('view-media.html')
+
+
+@APP.route('/create-media')
+def create():
+    return render_template('create-media.html')
+
+
+@APP.route('/create-game')
+def create_game():
+    return render_template('create-game.html')
+
+
+@APP.route('/create-music')
+def create_music():
+    return render_template('create-music.html')
+
+
+@APP.route('/create-movie')
+def create_movie():
+    return render_template('create-movie.html')
+
+
+@APP.route('/create-game-object', methods=['POST'])
+def create_game_object():
+    print(request.data, flush=True)
+    print(request.form, flush=True)
+    print(request.files, flush=True)
+    return render_template('create-media.html')
+
+@APP.route('/create-music-object')
+def create_music_object():
+    return render_template('create-music.html')
+
+
+@APP.route('/create-movie-object')
+def create_movie_object():
+    return render_template('create-movie.html')
+
