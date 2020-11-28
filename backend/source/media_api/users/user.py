@@ -58,7 +58,9 @@ class User:
     @staticmethod
     def retrieve_validated_user(user_name: str):
         document = _get_user_document(user_name)
-        return User(document)
+        if document:
+            return User(document)
+        raise ValueError('User Not found')
     
     @staticmethod
     def log_in_user(user_name: str, password: str):
@@ -108,7 +110,7 @@ class User:
             }
         )
 
-    def read_media(self, media_id: str):
+    def read_media(self, media_id: str) -> MediaItem:
         for media_item in self._document['media']:
             if media_item['_id'] == media_id:
                 return media_item
