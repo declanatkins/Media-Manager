@@ -11,7 +11,7 @@ def create_file(file_name: str):
     extension = '.' + file_name.rsplit('.', 1)[1] if '.' in file_name else ''
     file_uuid = str(uuid4())
     new_name = f'{file_uuid}{extension}'
-    with open(os.path.join(config.FILES_DIRECTORY, new_name), 'w') as data_f:
+    with open(os.path.join(config.FILES_DIRECTORY, new_name), 'wb') as data_f:
         data_f.write(request.data)
     return jsonify({'file_id': new_name}), HTTPStatus.CREATED
 

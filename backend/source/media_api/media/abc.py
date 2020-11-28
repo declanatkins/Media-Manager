@@ -13,12 +13,11 @@ class MediaItem(ABC):
         genres (list[str]): list of genres for this media item
     """
 
-    def __init__(self, name: str, data_path: str, thumbnail_path='', genres=[]):
+    def __init__(self, name: str, thumbnail_path='', genres=[], id_=None):
         self._name = name
         self._thumbnail_path = thumbnail_path
         self._genres = genres
-        self._data_path = data_path
-        self._id = uuid4()
+        self._id = id_ or str(uuid4())
 
     @property
     def id_code(self) -> str:

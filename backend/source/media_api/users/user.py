@@ -94,32 +94,6 @@ class User:
     def media(self) -> list[dict]:
         return self._document['media']
 
-    def update_user_name(self, user_name):
-        
-        if user_name == self._document['_id']:
-            raise ValueError('This already your user name')
-        if _get_user_document(user_name):
-            raise ValueError('User name already in use')
-        
-        user_collection = DB[config.MONGODB_USER_COLLECTION_NAME]
-        session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
-        
-        user_collection.delete_one(self._document)
-        old_user_name = self._document['_id']
-        self._document['_id'] = user_name
-        user_collection.insert_one(self._document)
-
-        active_sessions = session_collection.update_many(
-            {
-                'user_name': old_user_name
-            },
-            {
-                '$set': {
-                    'user_name': user_name
-                }
-            }
-        )
-
     def create_media(self, media: MediaItem):
         self._document['media'].append(media.as_json())
         user_collection = DB[config.MONGODB_USER_COLLECTION_NAME]
@@ -143,6 +117,8 @@ class User:
     
     def update_media(self, media: MediaItem):
         for i, media_item in enumerate(self._document['media']):
+            print(media_item['_id'], flush=True)
+            print(media.id_code, flush=True)
             if media_item['_id'] == media.id_code:
                 self._document['media'][i] = media.as_json()
                 user_collection = DB[config.MONGODB_USER_COLLECTION_NAME]

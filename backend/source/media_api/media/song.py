@@ -8,13 +8,13 @@ class Song(MediaItem):
     def __init__(
             self,
             name: str,
-            data_path: str,
             thumbnail_path: str,
             genres: str,
             artist: str,
-            album: str
+            album: str, 
+            id_=None
     ):
-        super(Song).__init__(name, data_path, thumbnail_path, genres)
+        super().__init__(name, thumbnail_path, genres, id_)
 
         self._artist = artist
         self._album = album
@@ -22,11 +22,10 @@ class Song(MediaItem):
     def as_json(self) -> dict:
         return {
             '_id': self._id,
-            'type': 'Movie',
+            'type': 'Song',
             'name': self._name,
-            'thumbnail': self._thumbnail_path,
+            'thumbnail_path': self._thumbnail_path,
             'genres': self._genres,
             'artist': self._artist,
-            'album': self._album,
-            'data_path': self._data_path
+            'album': self._album
         }

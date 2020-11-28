@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block page_title %}{% endblock %}
+{% block body %}
+    {{ super() }}
+    <div class="h-100 row align-items-center">
+        <div class="container">
+            Please enter the new details for your {{ media['type'] }}:
+            <form action="/edit-media" method="POST" enctype=multipart/form-data>
+                <input type="hidden" name="id" value="{{ media['_id'] }}">
+                <input type="hidden" name="type" value="{{ media['type'] }}">
+                <input type="hidden" name="thumbnail_path" value="{{media['thumbnail_path']}}">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" value="{{media['name']}}" name="name">
+                </div>
+                <div class="form-group">
+                  <label for="director">Genres</label>
+                  <input type="text" class="form-control" id="starring" value="{{media['genres']}}" name="genres">
+                </div>
+                {% if media['type'] == 'Movie' %}
+                    <div class="form-group">
+                        <label for="director">Director</label>
+                        <input type="text" class="form-control" id="director" value="{{media['director']}}" name="director">
+                    </div>
+                    <div class="form-group">
+                        <label for="director">Starring</label>
+                        <input type="text" class="form-control" id="starring" value="{{media['starring']}}" name="starring">
+                    </div>
+                {% elif media['type'] == 'Song' %}
+                    <div class="form-group">
+                        <label for="artist">Artist</label>
+                        <input type="text" class="form-control" id="artist" value="{{media['artist']}}" name="artist">
+                    </div>
+                    <div class="form-group">
+                        <label for="album">Album</label>
+                        <input type="text" class="form-control" id="album" value="{{media['album']}}" name="album">
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label for="multiplayer">Multiplayer</label>
+                        <select class="form-control" id="multiplayer" name="multiplayer" value="{{media['multiplayer']}}">
+                        <option>None - just singleplayer</option>
+                        <option>CO-OP</option>
+                        <option>MOBA</option>
+                        <option>MMO</option>
+                        <option>PVP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="platform">Platform</label>
+                        <select class="form-control" id="platform" name="platform" value="{{media['platform']}}">
+                        <option>PC</option>
+                        <option>Playstation</option>
+                        <option>Xbox</option>
+                        </select>
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                  <label for="thumbnail">Thumbnail</label>
+                  <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
+                </div>
+                <button type="submit" class="btn btn-primary">Edit</button>
+                <button type="submit" class="btn btn-primary" formaction="/delete-media">Delete</button>
+              </form>
+        </div>
+    </div>
+{% endblock %}

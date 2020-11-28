@@ -8,13 +8,13 @@ class Movie(MediaItem):
     def __init__(
             self,
             name: str,
-            data_path: str,
             thumbnail_path: str,
             genres: str,
             director: str,
-            starring: str
+            starring: str,
+            id_=None
     ):
-        super(Movie).__init__(name, data_path, thumbnail_path, genres)
+        super().__init__(name, thumbnail_path, genres, id_)
 
         self._director = director
         self._starring = starring
@@ -24,9 +24,8 @@ class Movie(MediaItem):
             '_id': self._id,
             'type': 'Movie',
             'name': self._name,
-            'thumbnail': self._thumbnail_path,
+            'thumbnail_path': self._thumbnail_path,
             'genres': self._genres,
             'director': self._director,
-            'starring': self._starring,
-            'data_path': self._data_path
+            'starring': self._starring
         }

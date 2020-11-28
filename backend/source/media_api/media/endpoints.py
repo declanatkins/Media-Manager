@@ -67,7 +67,7 @@ def get_media_by_id(media_id):
     except ValueError:
         response = {'message': 'Could not find the media item'}
         code = HTTPStatus.NOT_FOUND
-    return jsonify(response, code)
+    return jsonify(response), code
 
 
 @validate_session
@@ -75,13 +75,16 @@ def update_media_by_id(media_id):
     try:
         json_ = request.json
         media_type = json_.pop('type')
-        media_object = TYPES_DICT[media_type](**json_)
+        media_object = TYPES_DICT[media_type](id_=media_id, **json_)
         request.session_user.update_media(media_object)
         response = media_object.as_json()
         code = HTTPStatus.OK
     except KeyError:
         response = {'message': 'Invalid media type'}
         code = HTTPStatus.BAD_REQUEST
+    except ValueError:
+        response = {'message': 'Could not find the media item'}
+        code = HTTPStatus.NOT_FOUND
     return jsonify(response), code
 
 

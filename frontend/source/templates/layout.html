@@ -32,7 +32,6 @@
 
         <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-link"><a href="/">Home</a></li>
             {% if session.get("current_user", None) != None %}
               <li class="nav-item"><a class="nav-link" href="/create-media">Create Media</a></li>
 	            <li class="nav-item"><a class="nav-link" href="/view-media">View Media</a></li>

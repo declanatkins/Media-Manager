@@ -2,14 +2,57 @@
 {% block page_title %}{% endblock %}
 {% block body %}
     {{ super() }}
-    <div id="cards-holder" class="cards-container">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div class="h-100 row align-items-center">
+        <div class="container">
+            <form action="/view-media">
+                <div class="form-row">
+                  <div class="col">
+                    <label for="name">Name</label>
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="" name="name" id="name">
+                  </div>
+                  <div class="col">
+                    <label for="type">Types</label>
+                  </div>
+                  <div class="col">
+                    <select class="form-control" id="type" name="type">
+                        <option>All</option>
+                        <option>Song</option>
+                        <option>Movie</option>
+                        <option>Game</option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                  </div>
+                </div>
+              </form>
+        </div>
+        <div class="container  mt-4">
+            <div class="row">
+                {% for result in results %}
+                <div class="col-auto mb-3">
+                    <div class="card" style="width: 18rem;height: 32rem;">
+                        <img src="{{result['thumbnail_path']}}" class="card-img-top" alt="thumbnail">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ result['name'] }}</h5>
+                            {% if result['type'] == 'Game' %}
+                                <p class="card-text">Platform: {{ result['platform'] }}</p>
+                                <p class="card-text">Multiplayer: {{ result['multiplayer'] }}</p>
+                            {% elif result['type'] == 'Song' %}
+                                <p class="card-text">Artist: {{ result['artist'] }}</p>
+                                <p class="card-text">Album: {{ result['album'] }}</p>
+                            {% else %}
+                                <p class="card-text">Director: {{ result['director'] }}</p>
+                                <p class="card-text">Starring: {{ result['starring'] }}</p>
+                            {% endif %}
+                            <a href="/edit-media-page?id={{result['_id']}}" class="btn btn-primary">Edit</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-          </div>
+        </div>
     </div>
 {% endblock %}

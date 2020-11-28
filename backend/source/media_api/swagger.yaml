@@ -48,43 +48,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    put:
-      tags:
-      - users
-      parameters:
-        - in: header
-          name: session
-          schema:
-            type: string
-          required: true  
-      description: update user name
-      summary: Update user name
-      operationId: media_api.users.endpoints.rename_user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_name:
-                  type: string
-                  description: Name of the user
-      responses:
-        200:
-          description: Success OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user_name:
-                    type: string
-        default:
-          description: An error occured
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
   /users/logout:
     post:
       tags:
@@ -157,7 +120,7 @@ paths:
           name: name
           schema:
             type: string
-          required: true
+          required: false
       responses:
         200:
           description: Success OK
@@ -222,7 +185,7 @@ paths:
           name: name
           schema:
             type: string
-          required: true
+          required: false
         - in: path
           name: media_type
           schema:
@@ -434,7 +397,6 @@ components:
         - type
         - thumbnail_path
         - genres
-        - data_path
       properties:
         type:
           description: Type of the media item
@@ -447,11 +409,7 @@ components:
           description: Path to the thumbnail file
           type: string
         genres:
-          type: array
-          items:
-            type: string
-        data_path:
-          description: Path to the data file
+          description: Genres for the media item
           type: string
         _id:
           description: id of the item
@@ -473,6 +431,4 @@ components:
           type: string
         starring:
           description: starring actors/actresses for the movie
-          type: array
-          items:
-            type: string
+          type: string
