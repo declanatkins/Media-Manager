@@ -119,8 +119,6 @@ class User:
     
     def update_media(self, media: MediaItem):
         for i, media_item in enumerate(self._document['media']):
-            print(media_item['_id'], flush=True)
-            print(media.id_code, flush=True)
             if media_item['_id'] == media.id_code:
                 self._document['media'][i] = media.as_json()
                 user_collection = DB[config.MONGODB_USER_COLLECTION_NAME]

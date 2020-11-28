@@ -9,6 +9,10 @@ setup(
     author='Declan Atkins',
     author_email='declanatkins@gmail.com',
     packages=find_packages(),
+    package_data={
+      '': ['swagger.yaml']  
+    },
+    include_package_data=True,
     install_requires=[
         'connexion[swagger-ui]==2.7.0',
         'gunicorn==20.0.4',

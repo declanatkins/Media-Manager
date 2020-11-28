@@ -1,3 +1,4 @@
+from collections import namedtuple
 from functools import wraps
 from time import time
 from flask import jsonify
@@ -12,45 +13,45 @@ CLIENT = MongoClient(host=config.MONGODB_HOST, port=config.MONGODB_PORT)
 DB = CLIENT[config.MONGODB_DB_NAME]
 
 
-def validate_session(func):
+ValidationResponse = namedtuple('ValidationResponse', ['user', 'success', 'response', 'code'])
+
+
+def validate_session() -> ValidationResponse:
     """
-    Decorator for validating the supplied user session
+    Validates the supplied user session
     """
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            session_id = request.headers['session']
-        except KeyError:
-            response = jsonify({
-                'message': 'No authorization was provided'
-            })
-            return response, HTTPStatus.FORBIDDEN
-        session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
-        session_doc = session_collection.find_one({'_id': session_id})
+    try:
+        session_id = request.headers['session']
+    except KeyError:
+        response = jsonify({
+            'message': 'No authorization was provided'
+        })
+        return ValidationResponse('', False, response, HTTPStatus.FORBIDDEN)
+    session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
+    session_doc = session_collection.find_one({'_id': session_id})
+    
+    if not session_doc:
+        response = jsonify({
+            'message': 'User is not in an active session'
+        })
+        return ValidationResponse('', False, response, HTTPStatus.FORBIDDEN)
         
-        if not session_doc:
-            response = jsonify({
-                'message': 'User is not in an active session'
-            })
-            return response, HTTPStatus.FORBIDDEN
-            
-        if time() > session_doc['last_access'] + config.SESSION_INACTIVE_TIMEOUT:
-            response = jsonify({
-                'message': 'User\'s session has timed out'
-            })
-            session_collection.delete_one({'_id': session_id})
-            return response, HTTPStatus.FORBIDDEN
-        try:
-            request.session_user = User.retrieve_validated_user(session_doc['user_name'])
-        except ValueError:
-            session_collection.delete_one({'_id': session_id})
-            response = jsonify({
-                'message': 'User is not in an active session'
-            })
-            return response, HTTPStatus.FORBIDDEN
-        session_collection.update_one({'_id': session_id}, {'$set': {'last_access': time()}})
-        return func(*args, **kwargs)
-    return wrapper
+    if time() > session_doc['last_access'] + config.SESSION_INACTIVE_TIMEOUT:
+        response = jsonify({
+            'message': 'User\'s session has timed out'
+        })
+        session_collection.delete_one({'_id': session_id})
+        return ValidationResponse('', False, response, HTTPStatus.FORBIDDEN)
+    try:
+        session_user = User.retrieve_validated_user(session_doc['user_name'])
+    except ValueError:
+        session_collection.delete_one({'_id': session_id})
+        response = jsonify({
+            'message': 'User is not in an active session'
+        })
+        return ValidationResponse('', False, response, HTTPStatus.FORBIDDEN)
+    session_collection.update_one({'_id': session_id}, {'$set': {'last_access': time()}})
+    return ValidationResponse(session_user, True, None, None)
 
 
 def end_session(session_id: str):

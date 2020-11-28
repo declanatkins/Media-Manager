@@ -39,7 +39,6 @@ def login_user(user_name: str):
     return jsonify(response), code
 
 
-@validate_session
 def logout_user():
     session_id = request.headers['session'].split()
     end_session(session_id)

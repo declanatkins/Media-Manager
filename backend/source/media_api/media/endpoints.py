@@ -13,13 +13,18 @@ TYPES_DICT = {
     'Song': Song
 }
 
-@validate_session
+
 def create_media():
+    validation_response = validate_session()
+    if not validation_response.success:
+        return validation_response.response, validation_response.code
+    else:
+        session_user = validation_response.user
     try:
         json_ = request.json
         media_type = json_.pop('type')
         media_object = TYPES_DICT[media_type](**json_)
-        request.session_user.create_media(media_object)
+        session_user.create_media(media_object)
         response = media_object.as_json()
         code = HTTPStatus.CREATED
     except KeyError:
@@ -28,9 +33,13 @@ def create_media():
     return jsonify(response), code
 
 
-@validate_session
 def search_media():
-    media = request.session_user.media
+    validation_response = validate_session()
+    if not validation_response.success:
+        return validation_response.response, validation_response.code
+    else:
+        session_user = validation_response.user
+    media = session_user.media
     filtered_media = []
     for media_item in media:
         for filter_param in request.args:
@@ -43,9 +52,13 @@ def search_media():
     return jsonify(filtered_media), HTTPStatus.OK
 
 
-@validate_session
 def search_media_by_type(media_type):
-    media = request.session_user.media
+    validation_response = validate_session()
+    if not validation_response.success:
+        return validation_response.response, validation_response.code
+    else:
+        session_user = validation_response.user
+    media = session_user.media
     typed_media = [media_item for media_item in media if media_item['type'] == media_type]
     filtered_media = []
     for media_item in typed_media:
@@ -59,10 +72,14 @@ def search_media_by_type(media_type):
     return jsonify(filtered_media), HTTPStatus.OK
 
 
-@validate_session
 def get_media_by_id(media_id):
+    validation_response = validate_session()
+    if not validation_response.success:
+        return validation_response.response, validation_response.code
+    else:
+        session_user = validation_response.user
     try:
-        response = request.session_user.read_media(media_id)
+        response = session_user.read_media(media_id)
         code = HTTPStatus.OK
     except ValueError:
         response = {'message': 'Could not find the media item'}
@@ -70,13 +87,17 @@ def get_media_by_id(media_id):
     return jsonify(response), code
 
 
-@validate_session
 def update_media_by_id(media_id):
+    validation_response = validate_session()
+    if not validation_response.success:
+        return validation_response.response, validation_response.code
+    else:
+        session_user = validation_response.user
     try:
         json_ = request.json
         media_type = json_.pop('type')
         media_object = TYPES_DICT[media_type](id_=media_id, **json_)
-        request.session_user.update_media(media_object)
+        session_user.update_media(media_object)
         response = media_object.as_json()
         code = HTTPStatus.OK
     except KeyError:
@@ -88,10 +109,14 @@ def update_media_by_id(media_id):
     return jsonify(response), code
 
 
-@validate_session
 def delete_media_by_id(media_id):
+    validation_response = validate_session()
+    if not validation_response.success:
+        return validation_response.response, validation_response.code
+    else:
+        session_user = validation_response.user
     try:
-        request.session_user.delete_media(media_id)
+        session_user.delete_media(media_id)
         response = {}
         code = HTTPStatus.NO_CONTENT
     except ValueError:
