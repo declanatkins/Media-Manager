@@ -122,4 +122,4 @@ def delete_media_by_id(media_id):
     except ValueError:
         response = {'message': 'Could not find the media item'}
         code = HTTPStatus.NOT_FOUND
-    return jsonify(response, code)
+    return jsonify(response), code
