@@ -11,14 +11,14 @@ class Song(MediaItem):
             thumbnail_path: str,
             genres: str,
             artist: str,
-            album: str, 
+            album: str,
             id_=None
     ):
         super().__init__(name, thumbnail_path, genres, id_)
 
         self._artist = artist
         self._album = album
-        
+
     def as_json(self) -> dict:
         return {
             '_id': self._id,

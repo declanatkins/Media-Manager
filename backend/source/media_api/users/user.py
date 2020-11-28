@@ -37,7 +37,7 @@ class User:
             raise ValueError('Invalid username/password')
         if _get_user_document(user_name):
             raise ValueError('The user already exists')
-        
+
         salt = os.urandom(32)
         key = hashlib.pbkdf2_hmac(
             hash_name='sha256',
@@ -54,20 +54,20 @@ class User:
         }
         user_collection = DB[config.MONGODB_USER_COLLECTION_NAME]
         user_collection.insert_one(user_object)
-    
+
     @staticmethod
     def retrieve_validated_user(user_name: str):
         document = _get_user_document(user_name)
         if document:
             return User(document)
         raise ValueError('User Not found')
-    
+
     @staticmethod
     def log_in_user(user_name: str, password: str):
         document = _get_user_document(user_name)
         if not document:
             raise ValueError('User not found')
-        
+
         generated_key = hashlib.pbkdf2_hmac(
             hash_name='sha256',
             password=password.encode('utf-8'),
@@ -78,7 +78,7 @@ class User:
 
         if not generated_key == document['key']:
             raise ValueError('Incorrect Password')
-        
+
         session_id = str(uuid4())
         session_obj = {
             '_id': session_id,
@@ -114,9 +114,9 @@ class User:
         for media_item in self._document['media']:
             if media_item['_id'] == media_id:
                 return media_item
-        
+
         raise ValueError('The given media ID was not found')
-    
+
     def update_media(self, media: MediaItem):
         for i, media_item in enumerate(self._document['media']):
             if media_item['_id'] == media.id_code:

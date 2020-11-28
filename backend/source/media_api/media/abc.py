@@ -22,9 +22,9 @@ class MediaItem(ABC):
     @property
     def id_code(self) -> str:
         return self._id
-    
+
     @abstractmethod
-    def as_json(self) -> dict: 
+    def as_json(self) -> dict:
         """Return a json representation of the media item
         """
-        raise NotImplemented("Error - calling unimplemented abstract method")
+        raise NotImplementedError("Error - calling unimplemented abstract method")

@@ -18,7 +18,7 @@ class Game(MediaItem):
 
         self._multiplayer = multiplayer
         self._platform = platform
-        
+
     def as_json(self) -> dict:
         return {
             '_id': self._id,

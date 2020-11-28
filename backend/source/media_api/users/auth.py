@@ -1,5 +1,4 @@
 from collections import namedtuple
-from functools import wraps
 from time import time
 from flask import jsonify
 from flask import request
@@ -29,13 +28,13 @@ def validate_session() -> ValidationResponse:
         return ValidationResponse('', False, response, HTTPStatus.FORBIDDEN)
     session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
     session_doc = session_collection.find_one({'_id': session_id})
-    
+
     if not session_doc:
         response = jsonify({
             'message': 'User is not in an active session'
         })
         return ValidationResponse('', False, response, HTTPStatus.FORBIDDEN)
-        
+
     if time() > session_doc['last_access'] + config.SESSION_INACTIVE_TIMEOUT:
         response = jsonify({
             'message': 'User\'s session has timed out'
@@ -59,4 +58,3 @@ def end_session(session_id: str):
     """
     session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
     session_collection.delete_one({'_id': session_id})
-    

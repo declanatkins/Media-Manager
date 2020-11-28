@@ -18,7 +18,7 @@ class Movie(MediaItem):
 
         self._director = director
         self._starring = starring
-        
+
     def as_json(self) -> dict:
         return {
             '_id': self._id,

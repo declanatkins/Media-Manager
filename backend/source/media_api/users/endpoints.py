@@ -1,7 +1,6 @@
 from flask import jsonify
 from flask import request
 from http import HTTPStatus
-from .auth import validate_session
 from .auth import end_session
 from .user import User
 
