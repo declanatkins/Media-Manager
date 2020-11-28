@@ -22,8 +22,7 @@ def validate_session(func):
             session_id = request.headers['session']
         except KeyError:
             response = jsonify({
-                'status': HTTPStatus.FORBIDDEN,
-                'description': 'No authorization was provided'
+                'message': 'No authorization was provided'
             })
             return response, HTTPStatus.FORBIDDEN
         session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
@@ -31,15 +30,13 @@ def validate_session(func):
         
         if not session_doc:
             response = jsonify({
-                'status': HTTPStatus.FORBIDDEN,
-                'description': 'User is not in an active session'
+                'message': 'User is not in an active session'
             })
             return response, HTTPStatus.FORBIDDEN
             
         if time() > session_doc['last_access'] + config.SESSION_INACTIVE_TIMEOUT:
             response = jsonify({
-                'status': HTTPStatus.FORBIDDEN,
-                'description': 'User\'s session has timed out'
+                'message': 'User\'s session has timed out'
             })
             session_collection.delete_one({'_id': session_id})
             return response, HTTPStatus.FORBIDDEN

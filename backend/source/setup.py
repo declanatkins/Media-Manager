@@ -12,6 +12,7 @@ setup(
     install_requires=[
         'connexion[swagger-ui]==2.7.0',
         'gunicorn==20.0.4',
-        'pymongo==3.11.1'
+        'pymongo==3.11.1',
+        'flask-cors==3.0.9'
     ]
 )

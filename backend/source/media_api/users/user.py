@@ -40,7 +40,7 @@ class User:
         
         salt = os.urandom(32)
         key = hashlib.pbkdf2_hmac(
-            has_name='sha256',
+            hash_name='sha256',
             password=password.encode('utf-8'),
             salt=salt,
             iterations=100000,
@@ -67,7 +67,7 @@ class User:
             raise ValueError('User not found')
         
         generated_key = hashlib.pbkdf2_hmac(
-            has_name='sha256',
+            hash_name='sha256',
             password=password.encode('utf-8'),
             salt=document['salt'],
             iterations=100000,
@@ -76,15 +76,16 @@ class User:
 
         if not generated_key == document['key']:
             raise ValueError('Incorrect Password')
-
+        
+        session_id = str(uuid4())
         session_obj = {
-            '_id': str(uuid4()),
+            '_id': session_id,
             'user_name': user_name,
             'last_access': time()
         }
         session_collection = DB[config.MONGODB_SESSION_COLLECTION_NAME]
-        created_id = session_collection.insert_one(session_obj)
-        return created_id
+        session_collection.insert_one(session_obj)
+        return session_id
 
     def __init__(self, document: dict):
         self._document = document

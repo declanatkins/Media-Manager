@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block page_title %}{% endblock %}
+{% block body %}
+    {{ super() }}
+    {% if session.get('current_user') %}
+        <div class="h-100 row align-items-center">
+            <div class="container">
+                <a class="btn btn-primary btn-lg btn-block" href="/create-media">Create Media</a>
+                <a class="btn btn-primary btn-lg btn-block" href="/view-media">View Media</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
